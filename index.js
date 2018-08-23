@@ -1,12 +1,21 @@
+process.stdin.setEncoding('utf-8');
+var OSinfo = require('./modules/OSInfo');
+
 process.stdin.on('readable', function() {
+    // metoda .read() ma za zadanie odczytać co użytkownik podał na wejściu
     var input = process.stdin.read();
-    	if (input !== null) {
-	    	if (typeof input == "number") {
-			    console.log('Minutes: ~', (input / 60).toFixed(0), 'min', (input % 60), 'sec');
-			    console.log('Hours: ~', (input / 3600).toFixed(0), 'hrs', ((input % 3600)/60).toFixed(0), 'min', (input % 60), 'sec');
-			} else if (input === '/exit') {
-	            process.exit();
-			} else {
-	            process.stderr.write('Wrong instruction!');
-	        }}
+    if (input !== null) {
+        var instruction = input.toString().trim();
+        switch (instruction) {
+            case '/exit':
+            process.stdout.write('Quitting app!\n');
+            console.log(process.versions);
+            console.log("language: " + process.env.lang);
+            OSinfo.print();
+            process.exit();
+            break;
+        default:
+            process.stderr.write('Wrong instruction!');
+        }
+    }
 });
